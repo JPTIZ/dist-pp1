@@ -5,8 +5,8 @@ Objetivo
 --------
 
 Implementar os três algoritmos de exclusão mútua:
-    - Anel;
-    - Servidor/Coordenador;
-    - Multicast e relógios lógicos.
+- Anel;
+- Servidor/Coordenador;
+- Multicast e relógios lógicos.
 
 Linguagem: a definir.
