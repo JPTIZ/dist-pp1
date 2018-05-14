@@ -9,4 +9,12 @@ Implementar os três algoritmos de exclusão mútua:
 - Servidor/Coordenador;
 - Multicast e relógios lógicos.
 
-Linguagem: a definir.
+Linguagem:
+- [ ] C;
+- [ ] C++;
+- [ ] Java;
+- [x] Python3.
+
+Formato de apresentação:
+- [ ] Animação e GUI;
+- [ ] Mensagens no Console.
