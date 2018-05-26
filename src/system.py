@@ -2,16 +2,25 @@
 from typing import NamedTuple
 from datetime import datetime
 from enum import Enum
+import random
 
 
-class Token(int):
-    pass
+class Token:
+    def __init__(self, seed:int = None):
+        if seed is not None:
+            random.seed(seed) # uses given seed for the randomizer
+        else:
+            random.seed() # uses system time as seed
+
+        self.id = random.randint(0, 999999)
 
 
 class State(Enum):
     IDLE = 0
     WAIT = 1
     WORK = 2
+
+
 
 
 class MessageType(Enum):
@@ -28,7 +37,7 @@ class Message(NamedTuple):
 class Process(NamedTuple):
     pid: int
     timestamp: datetime = datetime.now()
-    token: Token
+    token: Token = 0 #TODO generate token later
     state: State = State.IDLE
 
     def request(self, index):
@@ -42,3 +51,4 @@ class Process(NamedTuple):
         if self.waiting() and index == self.token:
             self.state = State.WORK
             return Message(index=index, type=MessageType.RECEIVED)
+

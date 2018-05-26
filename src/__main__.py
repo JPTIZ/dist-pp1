@@ -5,12 +5,11 @@ from sys import argv
 
 from system import Process
 
-
-def main(algorithm: str='ring',
+def main(algorithm: str='token_ring',
          n_processes: int=10):
     processes = [Process(pid=i, timestamp=0)
                  for i in range(n_processes)]
-
+    
     head = '|'
     for process in processes:
         head += f' PID {process.pid:04} |'
@@ -20,6 +19,8 @@ def main(algorithm: str='ring',
     print(head)
     print(line)
 
+
+    
     while True:
         for process in processes:
             for process in processes:
@@ -33,5 +34,7 @@ if __name__ == '__main__':
     try:
         algorithm = argv[1]
     except IndexError:
-        algorithm = 'ring'
+        algorithm = 'token_ring'
     main(algorithm=algorithm)
+
+    
