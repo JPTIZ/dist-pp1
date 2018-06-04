@@ -1,8 +1,6 @@
+'''Main module.'''
 from algorithm import Algorithm
 
-a = Algorithm().algorithms['server_based']
-
-a()
-
-
-
+if __name__ == '__main__':
+    A = Algorithm().algorithms['server_based']
+    A()
