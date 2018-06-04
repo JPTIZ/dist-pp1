@@ -1,7 +1,7 @@
 '''Contains distributed system abstractions.'''
-from typing import NamedTuple
 from datetime import datetime
 from enum import Enum
+from typing import Callable, List, NamedTuple
 import random
 
 
@@ -24,7 +24,12 @@ class State(Enum):
 
 
 class MessageType(Enum):
-    '''Type of message passed between processes.'''
+    '''Type of message passed between processes.
+
+    PASS: Just passing token forward.
+    REQUEST: Requesting to enter critical region.
+    RECEIVED: Received access to critical region.
+    '''
     PASS = 0
     REQUEST = 1
     RECEIVED = 2
@@ -58,3 +63,7 @@ class Process(NamedTuple):
             self.state = State.WORK
             return Message(token=msg.token, type=MessageType.RECEIVED)
         return msg
+
+
+class Server(NamedTuple):
+    processes: List[Process]

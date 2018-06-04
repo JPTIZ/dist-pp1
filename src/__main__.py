@@ -10,8 +10,6 @@ def main(algorithm: str = 'token_ring',
          n_processes: int = 10):
     '''Initializes simulation.'''
     print(f'Using Algorithm: {algorithm}')
-    processes = [Process(pid=i, timestamp=0)
-                 for i in range(n_processes)]
 
     head = '|'
     for process in processes:
@@ -22,13 +20,10 @@ def main(algorithm: str = 'token_ring',
     print(head)
     print(line)
 
-
-
     while True:
         for process in processes:
             print(f'| {process.state} '.replace('State.', ''), end='')
         print('|')
-        # print(f'Updating process (PID={process.pid})')
 
 
 if __name__ == '__main__':
