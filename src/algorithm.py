@@ -2,10 +2,19 @@
 from typing import NamedTuple
 import random
 
-from system import Process, Server
+from system import Message, MessageType, Process, Server, Token
 
 
 DEFAULT_PROCESS_COUNT = 10
+
+
+def random_free_process(server: Server):
+    '''Chooses random process that does not contains a token. Returns `None` if
+    no process is free.'''
+    try:
+        return random.choice([p for p in server.processes if p.token is None])
+    except IndexError:
+        return None
 
 
 class Simulation(NamedTuple):
@@ -35,12 +44,62 @@ def token_ring(n_processes: int = DEFAULT_PROCESS_COUNT):
     print('Now we enter the token ring zone')
     print(n_processes)
 
+
 def server_based(n_processes: int = DEFAULT_PROCESS_COUNT):
     '''Starts server-based algorithm.'''
+    def make_request(requester, index, receiver=None):
+        '''Makes process request access to specified index.'''
+        print(f'{requester} is requesting access to index {index}')
+        if receiver is not None:
+            requester.request()
+            receiver.requests.append(requester)
+        else:
+            for _ in server.processes:
+                pass
+
+    def update(server, leader):
+        '''Updates server processes.'''
+        print('-'*80)
+        for process in server.processes:
+            print(f'Updating {process}')
+            if process == leader and process.token is not None:
+                try:
+                    requester = process.requests.popleft()
+                    requester.receive(Message(type=MessageType.RECEIVED,
+                                              token=token))
+                    requester.token = None
+                except IndexError:
+                    pass
+
+
     print('Now we enter the server based distribution zone')
+    token = Token()
     server = Server(processes=generate_processes(n_processes))
-    leader = random.choice(server.processes)
-    print(f'Leader PID: {leader.pid}.')
+
+    leader = random.randint(0, len(server.processes) - 1)
+    server.processes[leader] = Process(pid=leader, timestamp=0, token=token)
+    leader = server.processes[leader]
+    print(f'Leader: {leader}.')
+
+    make_request(random_free_process(server),
+                 random.randint(1, 10),
+                 leader)
+
+    update(server, leader)
+
+    for proc in server.processes:
+        print(proc)
+
+    make_request(random_free_process(server),
+                 random.randint(1, 10),
+                 leader)
+
+    print(f'Leader requests: {leader.requests}')
+
+    update(server, leader)
+
+    for proc in server.processes:
+        print(proc)
 
 
 def multicast(n_processes: int = DEFAULT_PROCESS_COUNT):

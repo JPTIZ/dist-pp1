@@ -1,7 +1,9 @@
 '''Contains distributed system abstractions.'''
+from collections import deque
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Callable, List, NamedTuple
+from typing import List, NamedTuple
 import random
 
 
@@ -14,6 +16,9 @@ class Token:
             random.seed() # uses system time as seed
 
         self.token_id = random.randint(0, 999999)
+
+    def __repr__(self):
+        return f'Token({self.token_id})'
 
 
 class State(Enum):
@@ -41,17 +46,18 @@ class Message(NamedTuple):
     type: MessageType
 
 
-class Process(NamedTuple):
+@dataclass
+class Process:
     '''Emulates a computer process.'''
     pid: int
     timestamp: datetime = datetime.now()
-    token: Token = 0 # TODO generate token later
+    token: Token = None # TODO generate token later
     state: State = State.IDLE
+    requests: deque = deque()
 
-    def request(self, index):
+    def request(self):
         '''Request data in an array index.'''
         self.state = State.WAIT
-        self.token = index
 
     def waiting(self):
         '''Whether the process is waiting or not.'''
@@ -59,11 +65,14 @@ class Process(NamedTuple):
 
     def receive(self, msg):
         '''Receives token message.'''
-        if self.waiting() and msg.token == self.token:
+        if self.waiting():
             self.state = State.WORK
-            return Message(token=msg.token, type=MessageType.RECEIVED)
-        return msg
+            self.token = msg.token
+
+    def __repr__(self):
+        return f'Process(PID={self.pid}, token={self.token})'
 
 
-class Server(NamedTuple):
+@dataclass
+class Server:
     processes: List[Process]
