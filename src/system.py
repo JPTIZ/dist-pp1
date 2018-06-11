@@ -31,7 +31,7 @@ class Message(NamedTuple):
     type: MessageType
 
 
-class Process():
+class Process:
     '''Emulates a computer process.'''
     def __init__(self, pid, timestamp):
         self.pid = pid

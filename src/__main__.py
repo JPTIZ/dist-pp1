@@ -17,7 +17,7 @@ def token_ring(processes:list, current_token, message):
     print('\nStarting Token Ring simulation:\n')
     print('------------------------------------')
 
-    processes[0].generateNewToken()
+    processes[0].token = Token()
     print(f'Generated token {processes[0].token.uuid} for process PID {processes[0].pid:04}')
     current_token = processes[0].token 
 
