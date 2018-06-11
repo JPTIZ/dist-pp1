@@ -77,7 +77,7 @@ def server_based(n_processes: int = DEFAULT_PROCESS_COUNT,
                 continue
 
             if process == leader and process.token is not None:
-                print(f'    Leader is going to pass token forward')
+                print('    Leader is going to pass token forward')
                 try:
                     requester = leader.requests.popleft()
                     requester.receive(Message(type=MessageType.RECEIVED,
@@ -101,6 +101,14 @@ def server_based(n_processes: int = DEFAULT_PROCESS_COUNT,
         print()
 
 
+    def print_iter(i: int):
+        '''Prints iteration heading.'''
+        title = f'Iteration {i+1}'
+        print('-'*80 + '\n' +
+              f'{title:^80}' + '\n' +
+              '-'*80)
+
+
     def print_requests(server: Server):
         '''Shows leader's requests.'''
         print(f'Leader (PID {server.leader.pid}) requests: '
@@ -118,10 +126,7 @@ def server_based(n_processes: int = DEFAULT_PROCESS_COUNT,
     print(f'Leader: {server.leader}.\n')
 
     for i in itertools.count():
-        title = f'Iteration {i+1}'
-        print('-'*80 + '\n' +
-              f'{title:^80}' + '\n' +
-              '-'*80)
+        print_iter(i)
 
         for _ in range(random.randint(0, 3)):
             make_request(random_free_process(server),
