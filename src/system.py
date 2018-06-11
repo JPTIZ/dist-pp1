@@ -1,10 +1,11 @@
 '''Contains distributed system abstractions.'''
 from collections import deque
-from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from typing import List, NamedTuple
 import random
+
+from dataclasses import dataclass
 
 
 class Token:
@@ -15,10 +16,10 @@ class Token:
         else:
             random.seed() # uses system time as seed
 
-        self.token_id = random.randint(0, 999999)
+        self.id = random.randint(0, 999)
 
     def __repr__(self):
-        return f'Token({self.token_id})'
+        return f'Token({self.id})'
 
 
 class State(Enum):
