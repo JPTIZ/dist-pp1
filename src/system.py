@@ -1,15 +1,21 @@
 '''Contains distributed system abstractions.'''
+from collections import deque
 from datetime import datetime
 from enum import Enum
-from typing import Callable, List, NamedTuple
-import random
+from typing import List, NamedTuple
 import uuid
+
+from dataclasses import dataclass
 
 
 class Token:
     '''Token for aquiring access to resource in mutual-exclusion algorithms.'''
     def __init__(self):
         self.uuid = uuid.uuid4()
+
+    def __repr__(self):
+        return f'Token({self.uuid})'
+
 
 class State(Enum):
     '''A process's current state.'''
@@ -36,18 +42,18 @@ class Message(NamedTuple):
     type: MessageType
 
 
+@dataclass
 class Process:
     '''Emulates a computer process.'''
-    def __init__(self, pid, timestamp):
-        self.pid = pid
-        self.timestamp = datetime.now()
-        self.token = Token()
-        self.state = State.IDLE
+    pid: int
+    timestamp: datetime
+    token: Token = None
+    state: State = State.IDLE
+    requests: deque = deque()
 
-    def request(self, index):
+    def request(self):
         '''Request data in an array index.'''
         self.state = State.WAIT
-        self.token = index
 
     def waiting(self):
         '''Whether the process is waiting or not.'''
@@ -55,11 +61,14 @@ class Process:
 
     def receive(self, msg):
         '''Receives token message.'''
-        if self.waiting() and msg.token == self.token:
+        if self.waiting():
             self.state = State.WORK
-            return Message(token=msg.token, type=MessageType.RECEIVED)
-        return msg
+            self.token = msg.token
+
+    def __repr__(self):
+        return f'Process(PID={self.pid}, token={self.token})'
 
 
-class Server(NamedTuple):
+@dataclass
+class Server:
     processes: List[Process]
