@@ -17,4 +17,26 @@ Linguagem:
 
 Formato de apresentação:
 - [ ] Animação e GUI;
-- [ ] Mensagens no Console.
+- [x] Mensagens no Console.
+
+Dependências
+------------
+
+- `dataclasses`
+
+Como Instalar
+-------------
+
+```bash
+pip install -e muxim
+```
+
+Como executar
+-------------
+
+```bash
+python -m muxim [-h]
+                [--algorithm {server_based,token_ring}]
+                [--n_processes N_PROCESSES]
+
+```

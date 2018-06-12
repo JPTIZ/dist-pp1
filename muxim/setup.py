@@ -7,5 +7,5 @@ setup(
     description='Mutual Exclusion Algorithm Simulator',
     packages=find_packages(),
     project_urls={},
-    install_requires='dataclasses'
+    install_requires=['dataclasses', 'carl']
 )
