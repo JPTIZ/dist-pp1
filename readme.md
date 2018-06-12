@@ -1,6 +1,12 @@
 Trabalho Prático 1 - Sistemas Distribuídos
 ==========================================
 
+Autores
+-------
+
+- Guilherme Michaelsen Chrisopher Cardoso
+- João Paulo Taylor Ienczak Zanette
+
 Objetivo
 --------
 
