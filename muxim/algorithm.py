@@ -46,6 +46,9 @@ def generate_processes(n_processes):
 
 
 def token_ring(n_processes: int = DEFAULT_PROCESS_COUNT):
+    '''
+    Simulates Token-Ring algorithm.
+    '''
     print('------------------------------------'
           '\nStarting Token Ring simulation:\n'
           '------------------------------------')
@@ -110,7 +113,9 @@ def token_ring(n_processes: int = DEFAULT_PROCESS_COUNT):
 
 def server_based(n_processes: int = DEFAULT_PROCESS_COUNT,
                  random_execution: bool = False):
-    '''Starts server-based algorithm.'''
+    '''
+    Simulates Server-Based algorithm.
+    '''
     def elect_leader(server: Server):
         '''Elects a random process as server's leader.'''
         leader = random.randint(0, len(server.processes) - 1)
