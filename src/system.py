@@ -3,18 +3,13 @@ from datetime import datetime
 from enum import Enum
 from typing import Callable, List, NamedTuple
 import random
+import uuid
 
 
 class Token:
     '''Token for aquiring access to resource in mutual-exclusion algorithms.'''
-    def __init__(self, seed: int = None):
-        if seed is not None:
-            random.seed(seed) # uses given seed for the randomizer
-        else:
-            random.seed() # uses system time as seed
-
-        self.token_id = random.randint(0, 999999)
-
+    def __init__(self):
+        self.uuid = uuid.uuid4()
 
 class State(Enum):
     '''A process's current state.'''
@@ -41,12 +36,13 @@ class Message(NamedTuple):
     type: MessageType
 
 
-class Process(NamedTuple):
+class Process:
     '''Emulates a computer process.'''
-    pid: int
-    timestamp: datetime = datetime.now()
-    token: Token = 0 # TODO generate token later
-    state: State = State.IDLE
+    def __init__(self, pid, timestamp):
+        self.pid = pid
+        self.timestamp = datetime.now()
+        self.token = Token()
+        self.state = State.IDLE
 
     def request(self, index):
         '''Request data in an array index.'''
