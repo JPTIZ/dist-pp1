@@ -28,7 +28,10 @@ Formato de apresentação:
 Dependências
 ------------
 
+Dependências instaláveis com `pip install [dependências]`.
+
 - `dataclasses`
+- `carl`
 
 Como Instalar
 -------------
