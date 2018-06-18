@@ -19,7 +19,7 @@ def random_free_process(server: Server):
         return random.choice([p for p in server.processes
                               if p is not server.leader and p.token is None])
     except IndexError as e:
-        print('indexerror: {e}')
+        print(f'indexerror: {e}')
         return None
 
 
@@ -41,11 +41,12 @@ def generate_processes(n_processes):
     '''
     Generates `n_processes` random processes.
     '''
-    return[Process(pid=i, timestamp=0)
-           for i in range(n_processes)]
+    return [Process(pid=i, timestamp=0)
+            for i in range(n_processes)]
 
 
-def token_ring(n_processes: int = DEFAULT_PROCESS_COUNT):
+def token_ring(n_processes: int = DEFAULT_PROCESS_COUNT,
+               max_iterations: int = 10):
     '''
     Simulates Token-Ring algorithm.
     '''
@@ -104,7 +105,7 @@ def token_ring(n_processes: int = DEFAULT_PROCESS_COUNT):
             print('THE TOKEN HAS BEEN LOST.')
             done = True
 
-        if iteractions > 30:
+        if iteractions > max_iterations:
             done = True
     print('Final result: \n'
           '-------------------------------------------------------------\n')
